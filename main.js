@@ -3,6 +3,12 @@ const menuD = document.querySelector('.desktop-menu'); /* elemento que debemos m
 const menuM = document.querySelector('.mobile-menu'); /* elemento que debemos mostrar */
 const carritoD = document.querySelector('.product-detail'); /* elemento que debemos mostrar */
 
+const productDetailSelected  = document.querySelector('.product-detail-selected');
+
+const productDetailSelectedClose = document.querySelector(
+  ".product-detail-selected-close");
+productDetailSelectedClose.addEventListener('click',closeProductDetail)
+
 
 const selectorMenuEmail = document.querySelector('.navbar-email');
 selectorMenuEmail.addEventListener('click', mostrarMenuDesktop);
@@ -32,17 +38,37 @@ function mostrarMenuMobile()
  if(!isAsideCarritoClosed){
   carritoD.classList.add("inactive");
  }
+ closeProductDetail();
   menuM.classList.toggle('inactive');
 }
 
 function toggleCarrito()
 {
   const isMenuMobileClosed = menuM.classList.contains('inactive') ;
+  
   if(!isMenuMobileClosed){
     menuM.classList.add('inactive');
   }
-    carritoD.classList.toggle('inactive');
+
+  const isProductDetailClosed = productDetailSelected.classList.contains("inactive");
+  
+  if (!isProductDetailClosed) {
+    productDetailSelected.classList.add("inactive");
+  }
+
+  carritoD.classList.toggle("inactive");
 }
+
+function openProductDetail()
+{
+  carritoD.classList.add("inactive");
+  productDetailSelected.classList.remove('inactive');
+}
+
+function closeProductDetail() {
+  productDetailSelected.classList.add("inactive");
+}
+
 
 //CREAMOS UN ARRAY PARA PODER LLENAR LO INFO MANUALMENTE
 const productList = [];
@@ -63,7 +89,6 @@ productList.push({
   image:
     "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
 });
-
 productList.push({
   name: "Camioneta",
   price: 2400,
@@ -90,6 +115,7 @@ for(product of productList){
 
   const productImg = document.createElement('img');
     productImg.setAttribute('src',product.image);
+    productImg.addEventListener("click", openProductDetail); //evento para abrir el cuadro de detalle del producto
 
   const productInfo = document.createElement("div");
     productInfo.classList.add("product-info");
